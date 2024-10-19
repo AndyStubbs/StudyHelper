@@ -26,6 +26,58 @@
 			</div>
 		</div>
 
+		<!-- Templates -->
+		<template id="topic-box-template">
+			<div class="topic-box">
+				<h3></h3>
+				<p></p>
+				<button class="create-quiz-btn">Create Quiz</button>
+				<button class="run-quiz-btn">Run Quiz</button>
+			</div>
+		</template>
+
+		<template id="create-topic-template">
+			<h2>Create New Topic</h2>
+			<form id="create-topic-form">
+				<input type="text" id="topic-title" placeholder="Topic Title" required />
+				<textarea
+					id="topic-description"
+					placeholder="Topic Description"
+					required
+				></textarea>
+				<button type="submit">Create Topic</button>
+			</form>
+		</template>
+
+		<template id="create-quiz-template">
+			<h2>Create New Quiz</h2>
+			<form id="create-quiz-form">
+				<input type="text" id="quiz-title" placeholder="Quiz Title" required />
+				<div id="questions-container"></div>
+				<button type="button" id="add-question-btn">Add Question</button>
+				<button type="submit">Create Quiz</button>
+			</form>
+		</template>
+
+		<template id="question-field-template">
+			<div class="question-field">
+				<input type="text" class="question-text" placeholder="Question" required />
+				<input type="text" class="question-answer" placeholder="Answer" required />
+			</div>
+		</template>
+
+		<template id="run-quiz-template">
+			<h2></h2>
+			<form id="quiz-form"></form>
+		</template>
+
+		<template id="quiz-question-template">
+			<div>
+				<p></p>
+				<input type="text" required />
+			</div>
+		</template>
+
 		<script src="src/myIndexDB.js"></script>
 		<script src="src/data.js"></script>
 		<script src="src/ui.js"></script>

@@ -1,10 +1,29 @@
-const UIAPI = (function () {
-	"use strict";
+"use strict";
 
-	function init() {
+/***************************************************************************************************
+ *	ui.js
+ *
+ *	This file provides a UIAPI for managing the user interface of the StudyHelper application.
+ *	It handles rendering topics, creating quizzes, and running quizzes.
+ *
+ ***************************************************************************************************/
+
+(function () {
+	// Define UIAPI
+	window.UIAPI = {};
+
+	/**************************
+	 * API Methods
+	 ***************************/
+
+	window.UIAPI.init = function () {
 		setupEventListeners();
 		loadTopics();
-	}
+	};
+
+	/**************************
+	 * Private Methods
+	 ***************************/
 
 	function setupEventListeners() {
 		document.getElementById("create-topic-btn").addEventListener("click", showCreateTopicModal);
@@ -21,15 +40,19 @@ const UIAPI = (function () {
 		const container = document.getElementById("topics-container");
 		container.innerHTML = "";
 
+		const template = document.getElementById("topic-box-template");
+
 		topics.forEach((topic) => {
-			const topicBox = document.createElement("div");
-			topicBox.className = "topic-box";
-			topicBox.innerHTML = `
-				<h3>${topic.title}</h3>
-				<p>${topic.description}</p>
-				<button onclick="UIAPI.showCreateQuizModal(${topic.id})">Create Quiz</button>
-				<button onclick="UIAPI.runQuiz(${topic.id})">Run Quiz</button>
-			`;
+			const topicBox = template.content.cloneNode(true);
+			topicBox.querySelector("h3").textContent = topic.title;
+			topicBox.querySelector("p").textContent = topic.description;
+
+			const createQuizBtn = topicBox.querySelector(".create-quiz-btn");
+			createQuizBtn.addEventListener("click", () => showCreateQuizModal(topic.id));
+
+			const runQuizBtn = topicBox.querySelector(".run-quiz-btn");
+			runQuizBtn.addEventListener("click", () => runQuiz(topic.id));
+
 			container.appendChild(topicBox);
 		});
 	}
@@ -53,14 +76,11 @@ const UIAPI = (function () {
 	function showCreateTopicModal() {
 		const modal = document.getElementById("modal");
 		const modalBody = document.getElementById("modal-body");
-		modalBody.innerHTML = `
-			<h2>Create New Topic</h2>
-			<form id="create-topic-form">
-				<input type="text" id="topic-title" placeholder="Topic Title" required>
-				<textarea id="topic-description" placeholder="Topic Description" required></textarea>
-				<button type="submit">Create Topic</button>
-			</form>
-		`;
+		const template = document.getElementById("create-topic-template");
+
+		modalBody.innerHTML = "";
+		modalBody.appendChild(template.content.cloneNode(true));
+
 		modal.style.display = "block";
 
 		document.getElementById("create-topic-form").addEventListener("submit", handleCreateTopic);
@@ -86,18 +106,15 @@ const UIAPI = (function () {
 	function showCreateQuizModal(topicId) {
 		const modal = document.getElementById("modal");
 		const modalBody = document.getElementById("modal-body");
-		modalBody.innerHTML = `
-			<h2>Create New Quiz</h2>
-			<form id="create-quiz-form">
-				<input type="text" id="quiz-title" placeholder="Quiz Title" required>
-				<div id="questions-container"></div>
-				<button type="button" onclick="UIAPI.addQuestionField()">Add Question</button>
-				<button type="submit">Create Quiz</button>
-			</form>
-		`;
+		const template = document.getElementById("create-quiz-template");
+
+		modalBody.innerHTML = "";
+		modalBody.appendChild(template.content.cloneNode(true));
+
 		modal.style.display = "block";
 
 		addQuestionField();
+		document.getElementById("add-question-btn").addEventListener("click", addQuestionField);
 		document
 			.getElementById("create-quiz-form")
 			.addEventListener("submit", (event) => handleCreateQuiz(event, topicId));
@@ -105,13 +122,8 @@ const UIAPI = (function () {
 
 	function addQuestionField() {
 		const container = document.getElementById("questions-container");
-		const questionIndex = container.children.length + 1;
-		const questionField = document.createElement("div");
-		questionField.innerHTML = `
-			<input type="text" class="question-text" placeholder="Question ${questionIndex}" required>
-			<input type="text" class="question-answer" placeholder="Answer" required>
-		`;
-		container.appendChild(questionField);
+		const template = document.getElementById("question-field-template");
+		container.appendChild(template.content.cloneNode(true));
 	}
 
 	async function handleCreateQuiz(event, topicId) {
@@ -151,27 +163,32 @@ const UIAPI = (function () {
 	function showQuizModal(quiz) {
 		const modal = document.getElementById("modal");
 		const modalBody = document.getElementById("modal-body");
-		modalBody.innerHTML = `
-			<h2>${quiz.title}</h2>
-			<form id="quiz-form">
-				${quiz.questions
-					.map(
-						(q, index) => `
-					<div>
-						<p>${q.question}</p>
-						<input type="text" id="answer-${index}" required>
-					</div>
-				`
-					)
-					.join("")}
-				<button type="submit">Submit Quiz</button>
-			</form>
-		`;
+		const template = document.getElementById("run-quiz-template");
+		const questionTemplate = document.getElementById("quiz-question-template");
+
+		modalBody.innerHTML = "";
+		const quizContent = template.content.cloneNode(true);
+
+		quizContent.querySelector("h2").textContent = quiz.title;
+		const form = quizContent.querySelector("#quiz-form");
+
+		quiz.questions.forEach((q, index) => {
+			const questionElement = questionTemplate.content.cloneNode(true);
+			questionElement.querySelector("p").textContent = q.question;
+			const input = questionElement.querySelector("input");
+			input.id = `answer-${index}`;
+			form.appendChild(questionElement);
+		});
+
+		const submitButton = document.createElement("button");
+		submitButton.type = "submit";
+		submitButton.textContent = "Submit Quiz";
+		form.appendChild(submitButton);
+
+		modalBody.appendChild(quizContent);
 		modal.style.display = "block";
 
-		document
-			.getElementById("quiz-form")
-			.addEventListener("submit", (event) => handleQuizSubmission(event, quiz));
+		form.addEventListener("submit", (event) => handleQuizSubmission(event, quiz));
 	}
 
 	function handleQuizSubmission(event, quiz) {
@@ -191,14 +208,6 @@ const UIAPI = (function () {
 		alert(`You scored ${score} out of ${quiz.questions.length}`);
 		closeModal();
 	}
-
-	return {
-		init,
-		showCreateQuizModal,
-		runQuiz,
-		addQuestionField,
-	};
 })();
 
-window.UIAPI = UIAPI;
-document.addEventListener("DOMContentLoaded", UIAPI.init);
+document.addEventListener("DOMContentLoaded", window.UIAPI.init);
