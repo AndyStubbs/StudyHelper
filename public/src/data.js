@@ -23,6 +23,8 @@
 
 	window.DataAPI.TOPICS = TOPICS;
 	window.DataAPI.addTopic = addTopic;
+	window.DataAPI.deleteTopic = deleteTopic;
+	window.DataAPI.updateTopic = updateTopic;
 	window.DataAPI.addQuiz = addQuiz;
 	window.DataAPI.getTopics = getTopics;
 	window.DataAPI.getQuizzes = getQuizzes;
@@ -32,33 +34,26 @@
 	 * Initialization
 	 ***************************/
 
-	let m_topics = localStorage.getItem( TOPICS );
-	if( m_topics === null ) {
-		m_topics = [];
-	} else {
-		m_topics = JSON.parse( m_topics );
-	}
+	// Load data from local storage
+	let m_topics = getStoredItem( TOPICS, [] );
+	let m_quizzes = getStoredItem( QUIZZES, {} );
+	let m_keywords = getStoredItem( KEYWORDS, [] );
 
-	let m_quizzes = localStorage.getItem( QUIZZES );
-	if( m_quizzes === null ) {
-		m_quizzes = {};
-	} else {
-		m_quizzes = JSON.parse( m_quizzes );
-	}
-
-	let m_keywords = localStorage.getItem( KEYWORDS );
-	if( m_keywords === null ) {
-		m_keywords = [];
-	} else {
-		m_keywords = JSON.parse( m_keywords );
-	}
-
+	// Create a databinds table
 	let m_dataBinds = {};
 	m_dataBinds[ TOPICS ] = [];
 
 	/**************************
 	 * Private Methods
 	 ***************************/
+
+	function getStoredItem( item, def ) {
+		const storedText = localStorage.getItem( item );
+		if( storedText === null ) {
+			return def;
+		}
+		return JSON.parse( storedText );
+	}
 
 	function addQuiz( topic, questions, answers, keywords ) {
 
@@ -87,12 +82,30 @@
 
 	function addTopic( title, description ) {
 		let topic = {
+			"id": crypto.randomUUID(),
 			"title": title,
 			"description": description,
 			"quizzes": []
 		};
 		m_topics.push( topic );
 		saveAll();
+	}
+
+	function deleteTopic( topic ) {
+		const index = m_topics.findIndex( t => t.id === topic.id );
+		if( index > -1 ) {
+			m_topics.splice( index, 1 );
+			saveAll();
+		}
+	}
+
+	function updateTopic( topic, title, description ) {
+		const index = m_topics.findIndex( t => t.id === topic.id );
+		if( index > -1 ) {
+			m_topics[ index ].title = title;
+			m_topics[ index ].description = description;
+			saveAll();
+		}
 	}
 
 	function getTopics() {

@@ -58,24 +58,20 @@ input[ type="text"], textarea {
 	border-color: red;
 }
 
-.topics-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-	gap: 1rem;
+
+.btn-container {
+	display: flex;
+	justify-content: flex-end;
 }
 
-.topic-box {
-	border: 1px solid #ddd;
-	padding: 1rem;
-	border-radius: 5px;
-}
 
-.topic-box h3 {
-	margin-top: 0;
-}
+/********************************
+*								*
+*		Modal Styles			*
+*								*
+*********************************/
 
 .modal {
-	display: none;
 	position: fixed;
 	z-index: 1;
 	left: 0;
@@ -142,4 +138,32 @@ input[ type="text"], textarea {
 .create-new-topic button {
 	margin-top: 1rem;
 	margin-bottom: 0.25rem;
+}
+
+
+/********************************
+*								*
+*		TopicBox Styles			*
+*								*
+*********************************/
+
+
+.topics-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 1rem;
+}
+
+.topic-box {
+	border: 1px solid #ddd;
+	padding: 1rem;
+	border-radius: 5px;
+}
+
+.topic-box h3 {
+	margin-top: 0;
+}
+
+.topic-box button {
+	width: 80px;
 }

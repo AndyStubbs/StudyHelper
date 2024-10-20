@@ -1,7 +1,7 @@
 "use strict";
 
 /***************************************************************************************************
- *	createTopic.js
+ *	components.js
  *
  *	This file encapsulates all component files into a global selector.
  *
