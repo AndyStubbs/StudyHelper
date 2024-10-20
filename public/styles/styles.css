@@ -1,4 +1,6 @@
 body {
+	background-color: #222;
+	color: #aaa;
 	font-family: Arial, sans-serif;
 	line-height: 1.6;
 	margin: 0;
@@ -18,27 +20,45 @@ main {
 	padding: 2rem;
 }
 
-#search-bar {
+.search-bar {
 	margin-bottom: 1rem;
 }
 
-#search-input {
+.search-input {
 	width: 100%;
 	padding: 0.5rem;
 	font-size: 1rem;
 }
 
-#create-topic-btn {
-	background-color: #4caf50;
+button {
+	background-color: #333;
 	color: white;
 	border: none;
 	padding: 0.5rem 1rem;
 	font-size: 1rem;
 	cursor: pointer;
 	margin-bottom: 1rem;
+	margin-right: 0.5rem;
 }
 
-#topics-container {
+button:hover {
+	background-color: #555;
+}
+
+button:active {
+	background-color: #222;
+}
+
+input[ type="text"], textarea {
+	background-color: #333;
+	color:white;
+}
+
+.invalid:placeholder-shown {
+	border-color: red;
+}
+
+.topics-container {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 	gap: 1rem;
@@ -54,16 +74,6 @@ main {
 	margin-top: 0;
 }
 
-.topic-box button {
-	background-color: #008cba;
-	color: white;
-	border: none;
-	padding: 0.5rem 1rem;
-	font-size: 0.9rem;
-	cursor: pointer;
-	margin-right: 0.5rem;
-}
-
 .modal {
 	display: none;
 	position: fixed;
@@ -77,7 +87,7 @@ main {
 }
 
 .modal-content {
-	background-color: #fefefe;
+	background-color: #222;
 	margin: 15% auto;
 	padding: 20px;
 	border: 1px solid #888;
@@ -95,7 +105,41 @@ main {
 
 .close:hover,
 .close:focus {
-	color: black;
+	color: #888;
 	text-decoration: none;
 	cursor: pointer;
+}
+
+
+/********************************
+*								*
+*	createNewTopic Styles		*
+*								*
+*********************************/
+
+.create-new-topic h2 {
+	margin-top: 0;
+}
+
+.create-new-topic .topic-title {
+	display: block;
+	width: calc( 100% - 1rem );
+	padding: 0.5rem;
+	margin: 0.5rem 0;
+}
+
+.create-new-topic .topic-description {
+	display: block;
+	width: calc( 100% - 1rem );
+	padding: 0.5rem;
+	margin: 0.5rem 0;
+}
+
+.create-new-topic textarea {
+	height: 100px;
+}
+
+.create-new-topic button {
+	margin-top: 1rem;
+	margin-bottom: 0.25rem;
 }

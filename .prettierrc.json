@@ -5,27 +5,8 @@
 	"singleQuote": false,
 	"trailingComma": "es5",
 	"bracketSpacing": true,
+	"bracketSameLine": true,
 	"arrowParens": "always",
 	"endOfLine": "lf",
-	"printWidth": 100,
-	"overrides": [
-		{
-			"files": "*.py",
-			"options": {
-				"tabWidth": 4
-			}
-		},
-		{
-			"files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
-			"options": {
-				"tabWidth": 4
-			}
-		},
-		{
-			"files": ["*.html", "*.css"],
-			"options": {
-				"tabWidth": 4
-			}
-		}
-	]
+	"printWidth": 100
 }

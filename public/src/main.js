@@ -1,24 +1,26 @@
 "use strict";
 
 /***************************************************************************************************
- *	ui.js
+ *	main.js
  *
- *	This file provides a UIAPI for managing the user interface of the StudyHelper application.
+ *	This file provides a Main API for managing the user interface of the StudyHelper application.
  *	It handles rendering topics, creating quizzes, and running quizzes.
  *
  ***************************************************************************************************/
 
 (function () {
-	// Define UIAPI
-	window.UIAPI = {};
+
+	// Define Main
+	window.Main = {};
 
 	/**************************
 	 * API Methods
 	 ***************************/
 
-	window.UIAPI.init = function () {
+	window.Main.init = function () {
 		setupEventListeners();
-		loadTopics();
+		const topics = DataAPI.getTopics();
+		DataAPI.bind( window.DataAPI.TOPICS, topics => renderTopics( topics ) );
 	};
 
 	/**************************
@@ -31,18 +33,13 @@
 		document.querySelector(".close").addEventListener("click", closeModal);
 	}
 
-	async function loadTopics() {
-		const topics = await DataAPI.getTopics();
-		renderTopics(topics);
-	}
-
-	function renderTopics(topics) {
+	function renderTopics( topics ) {
 		const container = document.getElementById("topics-container");
 		container.innerHTML = "";
 
 		const template = document.getElementById("topic-box-template");
 
-		topics.forEach((topic) => {
+		topics.forEach( ( topic ) => {
 			const topicBox = template.content.cloneNode(true);
 			topicBox.querySelector("h3").textContent = topic.title;
 			topicBox.querySelector("p").textContent = topic.description;
@@ -54,10 +51,10 @@
 			runQuizBtn.addEventListener("click", () => runQuiz(topic.id));
 
 			container.appendChild(topicBox);
-		});
+		} );
 	}
 
-	function handleSearch(event) {
+	function handleSearch( event ) {
 		const searchTerm = event.target.value.toLowerCase();
 		const topicBoxes = document.querySelectorAll(".topic-box");
 
@@ -74,29 +71,12 @@
 	}
 
 	function showCreateTopicModal() {
-		const modal = document.getElementById("modal");
-		const modalBody = document.getElementById("modal-body");
-		const template = document.getElementById("create-topic-template");
-
+		const modal = document.getElementById( "modal" );
+		const modalBody = document.getElementById( "modal-body" );
+		const topicBody = window.Comp.CreateNewTopic( closeModal );
 		modalBody.innerHTML = "";
-		modalBody.appendChild(template.content.cloneNode(true));
-
+		modalBody.appendChild( topicBody );
 		modal.style.display = "block";
-
-		document.getElementById("create-topic-form").addEventListener("submit", handleCreateTopic);
-	}
-
-	async function handleCreateTopic(event) {
-		event.preventDefault();
-		const title = document.getElementById("topic-title").value;
-		const description = document.getElementById("topic-description").value;
-
-		const topic = { title, description };
-
-		await DataAPI.addTopic(topic);
-
-		closeModal();
-		loadTopics();
 	}
 
 	function closeModal() {
@@ -210,4 +190,4 @@
 	}
 })();
 
-document.addEventListener("DOMContentLoaded", window.UIAPI.init);
+document.addEventListener("DOMContentLoaded", window.Main.init);

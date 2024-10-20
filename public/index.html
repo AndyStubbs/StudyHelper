@@ -12,11 +12,11 @@
 		</header>
 
 		<main>
-			<div id="search-bar">
-				<input type="text" id="search-input" placeholder="Search topics..." />
+			<button id="create-topic-btn" type="button">Create New Topic</button>
+			<div class="search-bar">
+				<input id="search-input" type="text" class="search-input" placeholder="Search topics..." />
 			</div>
-			<button id="create-topic-btn">Create New Topic</button>
-			<div id="topics-container"></div>
+			<div id="topics-container" class="topics-container"></div>
 		</main>
 
 		<div id="modal" class="modal">
@@ -31,8 +31,8 @@
 			<div class="topic-box">
 				<h3></h3>
 				<p></p>
-				<button class="create-quiz-btn">Create Quiz</button>
-				<button class="run-quiz-btn">Run Quiz</button>
+				<button class="create-quiz-btn" type="button">Create Quiz</button>
+				<button class="run-quiz-btn" type="button">Run Quiz</button>
 			</div>
 		</template>
 
@@ -78,8 +78,9 @@
 			</div>
 		</template>
 
-		<script src="src/myIndexDB.js"></script>
+		<script src="src/comp/components.js"></script>
+		<script src="src/comp/createNewTopic.js"></script>
 		<script src="src/data.js"></script>
-		<script src="src/ui.js"></script>
+		<script src="src/main.js"></script>
 	</body>
 </html>
