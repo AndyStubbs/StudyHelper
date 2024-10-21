@@ -18,6 +18,13 @@ header {
 
 main {
 	padding: 2rem;
+	height: calc(100vh - 20rem);
+}
+
+.topics-container {
+	flex: 1;
+	max-height: 100%;
+	overflow-y: auto;
 }
 
 .search-bar {
@@ -62,6 +69,15 @@ button.btn-light:active {
 	background-color: #888;
 }
 
+.toggle-btn-on {
+	background-color: #383;
+}
+
+.toggle-btn-on:hover,
+.toggle-btn-on:active {
+	background-color: #363;
+}
+
 input[ type="text"], textarea {
 	background-color: #333;
 	color:white;
@@ -71,28 +87,42 @@ input[ type="text"], textarea {
 	border-color: red;
 }
 
-
 .btn-container {
 	display: flex;
 	justify-content: flex-end;
 }
 
-/* Custom scrollbar styles */
 ::-webkit-scrollbar {
 	width: 16px;
 }
 
 ::-webkit-scrollbar-track {
-	background: #888;
+	background: #333;
+	border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-	background: #444;
+	background: #555;
+	border-radius: 10px;
+	border: 3px solid #333;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: #333;
+	background: #666;
 }
+
+::-webkit-scrollbar-track:horizontal {
+	height: 16px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+	height: 12px;
+	border-radius: 10px;
+	border: 3px solid #333;
+}
+
+
+
 /********************************
 *								*
 *		Modal Styles			*
@@ -106,13 +136,14 @@ input[ type="text"], textarea {
 	top: 0;
 	width: 100%;
 	height: 100%;
-	overflow: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
 	background-color: #222;
-	margin: 15% auto;
 	padding: 20px;
 	border: 1px solid #888;
 	width: 80%;
@@ -155,12 +186,9 @@ input[ type="text"], textarea {
 .create-new-topic .topic-description {
 	display: block;
 	width: calc( 100% - 1rem );
+	height: 100px;
 	padding: 0.5rem;
 	margin: 0.5rem 0;
-}
-
-.create-new-topic textarea {
-	height: 100px;
 }
 
 .create-new-topic button {
@@ -222,6 +250,7 @@ input[ type="text"], textarea {
 }
 
 .create-quiz-form li .question-text {
+	margin-right: 15px;
 	height: 25px;
 	white-space: nowrap;
 	flex-grow: 1;
@@ -234,4 +263,49 @@ input[ type="text"], textarea {
 	background-color: #700;
 	font-size: 22px;
 	padding: 0 12px;
+}
+
+
+/********************************
+*								*
+*		Edit Qestion Styles		*
+*								*
+*********************************/
+
+.create-question-form .question-text {
+	display: block;
+	width: calc( 100% - 1rem );
+	height: 100px;
+	padding: 0.5rem;
+	margin: 0.5rem 0;
+}
+
+.create-question-form ul {
+	padding-inline-start: 0;
+	overflow-y: auto;
+	max-height: 300px;
+}
+
+.create-question-form li {
+	display: flex;
+	justify-content: space-between;
+}
+
+.create-question-form .answer-text {
+	margin-right: 15px;
+	height: 25px;
+	white-space: nowrap;
+	flex-grow: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0;
+}
+
+.create-question-form .answers .answer-correct {
+	width: 95px;
+}
+
+.create-question-form .answer-error {
+	color: #b00;
+	font-weight: bold;
 }

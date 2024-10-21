@@ -22,7 +22,7 @@
 			quiz = {
 				"title": "",
 				"questions": [
-					{ "text": "", "answers": [ "" ] }
+					{ "text": "", "answers": [ { "text": "", "correct": true } ] }
 				]
 			};
 		} else {
@@ -51,10 +51,6 @@
 	function updateQuestionsContent( div, quiz ) {
 		const questionList = div.querySelector( ".questions" );
 		questionList.innerHTML = "";
-		createQuestionsElement( quiz, questionList );
-	}
-
-	function createQuestionsElement( quiz, questionList ) {
 		quiz.questions.forEach( ( question, index ) => {
 			let li = document.createElement( "li" );
 			li.classList.add( `question-${index}` );
@@ -70,11 +66,22 @@
 				</div>
 			`;
 			questionList.appendChild( li );
+			questionList.querySelector( ".question-edit" ).addEventListener( "click", () => {
+				let questionModal = Comp.Modal(
+					window.Comp.EditQuestion( question, ( question ) => questionUpdated( div, quiz, index, question ) )
+				);
+				document.getElementById( "modals-container" ).appendChild( questionModal );
+			} );
 		} );
 	}
 
 	function addQuestion( div, quiz ) {
 		quiz.questions.push( { "text": "", "answers": [ "" ] } );
+		updateQuestionsContent( div, quiz );
+	}
+
+	function questionUpdated( div, quiz, questionIndex, question ) {
+		quiz.questions[ questionIndex ] = question;
 		updateQuestionsContent( div, quiz );
 	}
 
