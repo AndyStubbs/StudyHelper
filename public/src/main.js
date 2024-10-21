@@ -73,7 +73,7 @@
 			);
 			document.getElementById( "modals-container" ).appendChild( createNewTopicModal );
 		} else {
-			createNewTopicModal.style.display = "block";
+			createNewTopicModal.style.display = "flex";
 		}
 	}
 

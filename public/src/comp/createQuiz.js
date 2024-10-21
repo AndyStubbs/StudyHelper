@@ -21,9 +21,7 @@
 			deleteBtnContent = "";
 			quiz = {
 				"title": "",
-				"questions": [
-					{ "text": "", "answers": [ { "text": "", "correct": true } ] }
-				]
+				"questions": []
 			};
 		} else {
 			quizTitle = topic.title;
@@ -55,9 +53,6 @@
 			let li = document.createElement( "li" );
 			li.classList.add( `question-${index}` );
 			let questionText = question.text;
-			if( questionText === "" ) {
-				questionText = "Question " + ( index + 1 );
-			}
 			li.innerHTML = `
 				<div class="question-text">${questionText}</div>
 				<div class="btn-container">
@@ -65,19 +60,22 @@
 					<button type="button" class="question-delete">&#128465;</button>
 				</div>
 			`;
+			li.querySelector( ".question-edit" ).addEventListener( "click", () => editQuestion( div, quiz, index, question ) );
 			questionList.appendChild( li );
-			questionList.querySelector( ".question-edit" ).addEventListener( "click", () => {
-				let questionModal = Comp.Modal(
-					window.Comp.EditQuestion( question, ( question ) => questionUpdated( div, quiz, index, question ) )
-				);
-				document.getElementById( "modals-container" ).appendChild( questionModal );
-			} );
 		} );
 	}
 
+	function editQuestion( div, quiz, index, question ) {
+		let questionModal = Comp.Modal(
+			window.Comp.EditQuestion( question, ( question ) => questionUpdated( div, quiz, index, question ) )
+		);
+		document.getElementById( "modals-container" ).appendChild( questionModal );
+	}
+
 	function addQuestion( div, quiz ) {
-		quiz.questions.push( { "text": "", "answers": [ "" ] } );
-		updateQuestionsContent( div, quiz );
+		const question = { "text": "", "answers": [ { "text": "", "correct": true } ] };
+		quiz.questions.push( question );
+		editQuestion( div, quiz, quiz.questions.length - 1, question );
 	}
 
 	function questionUpdated( div, quiz, questionIndex, question ) {
