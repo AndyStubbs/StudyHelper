@@ -55,13 +55,12 @@
 		return JSON.parse( storedText );
 	}
 
-	function addQuiz( topic, questions, answers, keywords ) {
+	function addQuiz( topic, questions, keywords ) {
 
 		// Create the quiz
 		let quiz = {
 			"id": crypto.randomUUID(),
 			"questions": questions,
-			"answers": answers,
 			"keywords": keywords
 		};
 		m_quizzes[ quiz.id ] = quiz;
@@ -109,11 +108,32 @@
 	}
 
 	function getTopics() {
-		return m_topics;
+		return m_topics.map( topic => {
+			return {
+				"id": topic.id,
+				"title": topic.title,
+				"description": topic.description,
+				"quizzes": getQuizzes( topic )
+			};
+		} );
 	}
 
 	function getQuizzes( topic ) {
-		return topic.quizzes.map( quizId => m_quizzes[ quizId ] );
+		return topic.quizzes.map( quizId => {
+			return {
+				"title": m_quizzes[ quizId ].title,
+				"questions": getQuestions( m_quizzes[ quizId ] )
+			};
+		} );
+	}
+
+	function getQuestions( quiz ) {
+		return quiz.questions.map( question => {
+			return {
+				"text": question.text,
+				"answers": question.answers.slice()
+			};
+		} );
 	}
 
 	function bindData( dataName, callback ) {

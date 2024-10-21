@@ -22,7 +22,14 @@
 		`;
 		div.querySelector( ".modal-body" ).appendChild( body );
 		div.querySelector( ".close" ).addEventListener( "click", () => closeModal( div, handleClose ) );
+		div.addEventListener( "click", ( e ) => clickModal( e, div, handleClose ) );
 		return div;
+	}
+
+	function clickModal( e, div, handleClose ) {
+		if( e.target === e.currentTarget ) {
+			closeModal( div, handleClose );
+		}
 	}
 
 	function closeModal( div, handleClose ) {

@@ -19,7 +19,6 @@
 		let topicTitle = "";
 		let topicDescription = "";
 		if( topic === null ) {
-			isUpdate = false;
 			title = "Create New Topic";
 			createBtnText = "Create Topic";
 			deleteBtnContent = "";
@@ -35,16 +34,14 @@
 				<textarea
 					class="topic-description"
 					placeholder="Topic Description"
-				>${topicTitle}</textarea>
+				>${topicDescription}</textarea>
 				<div class="btn-container">
 					<button class="submit-topic" type="submit">${createBtnText}</button>
 					${deleteBtnContent}
-					<button class="cancel-topic" type="button">Cancel</button>
 				</div>
 			</form>
 		`;
 		div.querySelector( ".submit-topic" ).addEventListener( "click", ( e ) => submitTopicButton( e, div, closeTopic, topic ) );
-		div.querySelector( ".cancel-topic" ).addEventListener( "click", () => cancel( div, closeTopic ) );
 		let deleteBtn = div.querySelector( ".delete-topic" );
 		if( deleteBtn ) {
 			deleteBtn.addEventListener( "click", () => {

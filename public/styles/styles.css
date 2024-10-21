@@ -49,6 +49,19 @@ button:active {
 	background-color: #222;
 }
 
+button.btn-light {
+	background-color: #ddd;
+	color: #333;
+}
+
+button.btn-light:hover {
+	background-color: #aaa;
+}
+
+button.btn-light:active {
+	background-color: #888;
+}
+
 input[ type="text"], textarea {
 	background-color: #333;
 	color:white;
@@ -64,7 +77,22 @@ input[ type="text"], textarea {
 	justify-content: flex-end;
 }
 
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+	width: 16px;
+}
 
+::-webkit-scrollbar-track {
+	background: #888;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #444;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #333;
+}
 /********************************
 *								*
 *		Modal Styles			*
@@ -91,6 +119,10 @@ input[ type="text"], textarea {
 	max-width: 500px;
 }
 
+.modal-body h2 {
+	margin-top: 0;
+}
+
 .close {
 	color: #aaa;
 	float: right;
@@ -112,10 +144,6 @@ input[ type="text"], textarea {
 *	createNewTopic Styles		*
 *								*
 *********************************/
-
-.create-new-topic h2 {
-	margin-top: 0;
-}
 
 .create-new-topic .topic-title {
 	display: block;
@@ -147,7 +175,6 @@ input[ type="text"], textarea {
 *								*
 *********************************/
 
-
 .topics-container {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -166,4 +193,45 @@ input[ type="text"], textarea {
 
 .topic-box button {
 	width: 80px;
+}
+
+
+
+/********************************
+*								*
+*		Create Quiz Styles		*
+*								*
+*********************************/
+
+.create-quiz-form .quiz-title {
+	display: block;
+	width: calc( 100% - 1rem );
+	padding: 0.5rem;
+	margin: 0.5rem 0;
+}
+
+.create-quiz-form ul {
+	padding-inline-start: 0;
+	overflow-y: auto;
+	max-height: 300px;
+}
+
+.create-quiz-form li {
+	display: flex;
+	justify-content: space-between;
+}
+
+.create-quiz-form li .question-text {
+	height: 25px;
+	white-space: nowrap;
+	flex-grow: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0;
+}
+
+.question-delete {
+	background-color: #700;
+	font-size: 22px;
+	padding: 0 12px;
 }
