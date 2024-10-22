@@ -55,26 +55,18 @@
 		return JSON.parse( storedText );
 	}
 
-	function addQuiz( topic, questions, keywords ) {
+	function addQuiz( topic, title, questions ) {
 
 		// Create the quiz
 		let quiz = {
 			"id": crypto.randomUUID(),
-			"questions": questions,
-			"keywords": keywords
+			"title": title,
+			"questions": questions
 		};
 		m_quizzes[ quiz.id ] = quiz;
 
 		// Add quiz to topic
 		topic.quizzes.push( quiz.id );
-
-		// Add quiz to keywords list
-		for( let i = 0; i < m_keywords.length; i += 1 ) {
-			if( !m_keywords[ keywords[ i ] ] ) {
-				m_keywords[ keywords[ i ] ] = [];
-			}
-			m_keywords[ keywords[ i ] ].push( quiz.id );
-		}
 
 		saveAll();
 	}

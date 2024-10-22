@@ -33,14 +33,14 @@
 				<button class="study-topic-btn" type="button">Create New Quiz</button>
 			</div>
 		`;
-		div.querySelector( ".study-topic-btn" ).addEventListener( "click", () => createQuizBtnClick( topic ) );
+		div.querySelector( ".study-topic-btn" ).addEventListener( "click", () => createQuizBtnClick() );
 		//div.querySelector( ".study-topic-btn" ).addEventListener( "click", ( e ) => runQuizBtnClick() );
 		//div.querySelector( ".edit-topic-btn" ).addEventListener( "click", () => editQuizBtnClick() );
 		return div;
 	}
 
-	function createQuizBtnClick( topic ) {
-		let createQuizModal = Comp.Modal( window.Comp.CreateQuiz( topic, null, () => closeQuizModal( editModal ) ), closeQuizModal );
+	function createQuizBtnClick() {
+		let createQuizModal = Comp.Modal( window.Comp.CreateQuiz( null, () => closeQuizModal( editModal ) ), closeQuizModal );
 		document.getElementById( "modals-container" ).appendChild( createQuizModal );
 	}
 

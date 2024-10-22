@@ -11,7 +11,7 @@
 
 	window.Comp.CreateQuiz = createQuiz;
 
-	function createQuiz( topic, quiz ) {
+	function createQuiz( quiz ) {
 		let div = document.createElement( "div" );
 		let title = "Edit Quiz";
 		let deleteBtnContent = `<button class="delete-quiz" type="button">Delete</button>`;
@@ -24,7 +24,7 @@
 				"questions": []
 			};
 		} else {
-			quizTitle = topic.title;
+			quizTitle = quiz.title;
 		}
 		div.classList.add( "create-quiz" );
 		div.innerHTML = `
@@ -73,13 +73,15 @@
 	}
 
 	function addQuestion( div, quiz ) {
-		const question = { "text": "", "answers": [ { "text": "", "correct": true } ] };
-		quiz.questions.push( question );
-		editQuestion( div, quiz, quiz.questions.length - 1, question );
+		editQuestion( div, quiz, quiz.questions.length, null );
 	}
 
 	function questionUpdated( div, quiz, questionIndex, questionData ) {
-		quiz.questions[ questionIndex ] = questionData;
+		if( questionIndex >= quiz.questions.length ) {
+			quiz.questions.push( questionData );
+		} else {
+			quiz.questions[ questionIndex ] = questionData;
+		}
 		updateQuestionsContent( div, quiz );
 	}
 

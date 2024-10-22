@@ -16,7 +16,6 @@
 		let title = "Edit Question";
 		if( question === null ) {
 			title = "Create Question";
-			deleteBtnContent = "";
 			question = { "text": "", "answers": [ { "text": "", "correct": true } ] };
 		}
 		div.classList.add( "create-question" );
