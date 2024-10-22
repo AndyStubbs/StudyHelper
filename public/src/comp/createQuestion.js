@@ -32,8 +32,8 @@
 				>${question.text}</textarea>
 				<div class="answer-error"></div>
 				<ul class="answers"></ul>
-				<button class="add-answer-btn btn-light" type="button">Add Answer</button>
 				<div class="btn-container">
+					<button class="add-answer-btn btn-light" type="button">Add Answer</button>
 					<button class="submit-question" type="submit">Save Changes</button>
 				</div>
 			</form>
@@ -103,6 +103,7 @@
 		updateAnswers( div, question );
 		question.answers.push( { "text": "", "correct": false } );
 		updateAnswersContent( div, question );
+		div.querySelector( ".answers li:last-child .answer-text" ).focus();
 	}
 
 	function updateAnswers( div, question ) {

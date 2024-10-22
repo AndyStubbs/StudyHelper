@@ -32,8 +32,8 @@
 			<form class="create-quiz-form">
 				<input type="text" class="quiz-title" placeholder="Quiz Title" value="${quizTitle}"/>
 				<ul class="questions"></ul>
-				<button class="add-question-btn btn-light" type="button">Add Question</button>
 				<div class="btn-container">
+					<button class="add-question-btn btn-light" type="button">Add Question</button>
 					<button class="submit-quiz" type="submit">Save Changes</button>
 					${deleteBtnContent}
 				</div>
