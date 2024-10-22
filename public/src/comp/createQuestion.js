@@ -29,7 +29,7 @@
 					placeholder="Enter your question"
 					title="Enter the text for your question"
 				>${question.text}</textarea>
-				<div class="answer-error"></div>
+				<div class="answer-error item-error"></div>
 				<ul class="answers"></ul>
 				<div class="btn-container">
 					<button class="add-answer-btn btn-light" type="button">Add Answer</button>
@@ -75,7 +75,7 @@
 						class="toggle-btn answer-correct ${answer.correct ? 'toggle-btn-on' : ''}"
 						title="Select one correct answer from list."
 					>${answer.correct ? 'Correct' : 'Incorrect'}</button>
-					<button type="button" class="answer-delete" title="Remove answer">&#128465;</button>
+					<button type="button" class="answer-delete btn-delete" title="Remove answer">&#128465;</button>
 				</div>
 			`;
 
@@ -153,7 +153,7 @@
 		// Validate Answer Toggle
 		if( isValid && div.querySelectorAll( ".answers .toggle-btn-on" ).length === 0 ) {
 			isValid = false;
-			div.querySelector( ".answer-error" ).innerText = "You must select a correct answer.";
+			div.querySelector( ".answer-error" ).innerText = "You must select one correct answer.";
 		}
 
 		if( isValid ) {

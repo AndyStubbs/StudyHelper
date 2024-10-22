@@ -11,7 +11,7 @@
 
 	window.Comp.CreateQuiz = createQuiz;
 
-	function createQuiz( quiz ) {
+	function createQuiz( quiz, quizUpdated ) {
 		let div = document.createElement( "div" );
 		let title = "Edit Quiz";
 		let deleteBtnContent = `<button class="delete-quiz" type="button">Delete</button>`;
@@ -19,10 +19,7 @@
 		if( quiz === null ) {
 			title = "Create Quiz";
 			deleteBtnContent = "";
-			quiz = {
-				"title": "",
-				"questions": []
-			};
+			quiz = DataAPI.createQuiz();
 		} else {
 			quizTitle = quiz.title;
 		}
@@ -31,6 +28,7 @@
 			<h2>${title}</h2>
 			<form class="create-quiz-form">
 				<input type="text" class="quiz-title" placeholder="Quiz Title" value="${quizTitle}"/>
+				<div class="quiz-error item-error"></div>
 				<ul class="questions"></ul>
 				<div class="btn-container">
 					<button class="add-question-btn btn-light" type="button">Add Question</button>
@@ -42,8 +40,13 @@
 
 		updateQuestionsContent( div, quiz );
 		div.querySelector( ".add-question-btn" ).addEventListener( "click", () => addQuestion( div, quiz ) );
+		div.querySelector( ".submit-quiz" ).addEventListener( "click", ( e ) => saveChanges( e, div, quiz, quizUpdated ) );
 
-		return div;
+		const quizOriginal = JSON.stringify( quiz );
+		return {
+			"div": div,
+			"onClose": () => onClose( div, quiz, quizUpdated, quizOriginal )
+		};
 	}
 
 	function updateQuestionsContent( div, quiz ) {
@@ -57,7 +60,7 @@
 				<div class="question-text">${questionText}</div>
 				<div class="btn-container">
 					<button type="button" class="question-edit">Edit</button>
-					<button type="button" class="question-delete">&#128465;</button>
+					<button type="button" class="question-delete btn-delete">&#128465;</button>
 				</div>
 			`;
 			li.querySelector( ".question-edit" ).addEventListener( "click", () => editQuestion( div, quiz, index, question ) );
@@ -67,7 +70,10 @@
 
 	function editQuestion( div, quiz, index, question ) {
 		const questionData = structuredClone( question );
-		const questionComp = window.Comp.CreateQuestion( questionData, ( newQuestionData ) => questionUpdated( div, quiz, index, newQuestionData ) );
+		const questionComp = window.Comp.CreateQuestion(
+			questionData,
+			( newQuestionData ) => questionUpdated( div, quiz, index, newQuestionData )
+		);
 		let questionModal = Comp.Modal( questionComp.div, questionComp.onClose );
 		document.getElementById( "modals-container" ).appendChild( questionModal );
 	}
@@ -82,7 +88,55 @@
 		} else {
 			quiz.questions[ questionIndex ] = questionData;
 		}
+		div.querySelector( ".quiz-error" ).innerText = "";
 		updateQuestionsContent( div, quiz );
 	}
 
+	function saveChanges( e, div, quiz, quizUpdated ) {
+		if( e !== null ) {
+			e.preventDefault();
+		}
+
+		// Update the quiz title
+		const quizTitleInput = div.querySelector( ".quiz-title" );
+		quiz.title = quizTitleInput.value;
+
+		// Validate the quiz title
+		let isValid = true;
+		if( quizTitleInput.value === "" ) {
+			quizTitleInput.classList.add( "invalid" );
+			isValid = false;
+		}
+
+		// Validate the questions
+		if( quiz.questions.length === 0 ) {
+			isValid = false;
+			div.querySelector( ".quiz-error" ).innerText = "The quiz must have at least one question.";
+		}
+
+		// If valid close modal and save quiz
+		if( isValid ) {
+			div.querySelector( ".quiz-error" ).innerText = "";
+			div.closest( ".modal" ).remove();
+			quizUpdated( quiz );
+		}
+	}
+
+	function onClose( div, quiz, quizUpdated, quizOriginal ) {
+
+		const quizTitleInput = div.querySelector( ".quiz-title" );
+		quiz.title = quizTitleInput.value;
+
+		// Check if quiz has been changed
+		if( JSON.stringify( quiz ) !== quizOriginal ) {
+			const answer = confirm( "Do you wish to save changes?" );
+			if( answer ) {
+				saveChanges( null, div, quiz, quizUpdated );
+				return false;
+			}
+		}
+
+		// Continue with closing modal
+		return true;
+	}
 } )();

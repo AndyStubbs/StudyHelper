@@ -24,9 +24,12 @@
 	window.DataAPI.TOPICS = TOPICS;
 	window.DataAPI.addTopic = addTopic;
 	window.DataAPI.deleteTopic = deleteTopic;
+	window.DataAPI.deleteQuiz = deleteQuiz;
 	window.DataAPI.updateTopic = updateTopic;
-	window.DataAPI.addQuiz = addQuiz;
+	window.DataAPI.createQuiz = createQuiz;
+	window.DataAPI.saveQuiz = saveQuiz;
 	window.DataAPI.getTopics = getTopics;
+	window.DataAPI.getTopic = getTopic;
 	window.DataAPI.getQuizzes = getQuizzes;
 	window.DataAPI.bind = bindData;
 
@@ -55,20 +58,35 @@
 		return JSON.parse( storedText );
 	}
 
-	function addQuiz( topic, title, questions ) {
+	function saveQuiz( topicId, quiz ) {
 
-		// Create the quiz
-		let quiz = {
-			"id": crypto.randomUUID(),
-			"title": title,
-			"questions": questions
-		};
+		// Create a new quiz
+		if( quiz.id === "new" ) {
+			quiz = structuredClone( quiz );
+			quiz.id = crypto.randomUUID();
+			const topic = m_topics.find( t => t.id === topicId );
+			topic.quizzes.push( quiz.id );
+		}
 		m_quizzes[ quiz.id ] = quiz;
 
-		// Add quiz to topic
-		topic.quizzes.push( quiz.id );
-
 		saveAll();
+	}
+
+	function deleteQuiz( topicId, quiz ) {
+		const topic = m_topics.find( t => t.id === topicId );
+		const quizIndex = topic.quizzes.findIndex( q => q.id === quiz.id );
+		topic.quizzes.splice( quizIndex, 1 );
+		delete m_quizzes[ quiz.id ];
+		saveAll();
+	}
+
+	function createQuiz() {
+		const quiz = {
+			"id": "new",
+			"title": "",
+			"questions": []
+		};
+		return quiz;
 	}
 
 	function addTopic( title, description ) {
@@ -110,9 +128,20 @@
 		} );
 	}
 
+	function getTopic( topicId ) {
+		const topic = m_topics.find( t => t.id === topicId );
+		return {
+			"id": topic.id,
+			"title": topic.title,
+			"description": topic.description,
+			"quizzes": getQuizzes( topic )
+		};
+	}
+
 	function getQuizzes( topic ) {
 		return topic.quizzes.map( quizId => {
 			return {
+				"id": m_quizzes[ quizId ].id,
 				"title": m_quizzes[ quizId ].title,
 				"questions": getQuestions( m_quizzes[ quizId ] )
 			};

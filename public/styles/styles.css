@@ -47,35 +47,45 @@ button {
 	margin-bottom: 1rem;
 	margin-right: 0.5rem;
 }
-
 button:hover {
-	background-color: #555;
+	background-color: #444;
 }
-
 button:active {
-	background-color: #222;
+	background-color: #555;
 }
 
 button.btn-light {
 	background-color: #ddd;
 	color: #333;
 }
-
 button.btn-light:hover {
 	background-color: #aaa;
 }
-
 button.btn-light:active {
 	background-color: #888;
 }
 
+button.btn-delete {
+	background-color: #600;
+	font-size: 22px;
+	padding: 0 12px;
+}
+
+button.btn-delete:active {
+	background-color: #700;
+}
+
+button.btn-delete:hover {
+	background-color: #800;
+}
+
 .toggle-btn-on {
-	background-color: #383;
+	background-color: #070;
 }
 
 .toggle-btn-on:hover,
 .toggle-btn-on:active {
-	background-color: #363;
+	background-color: #060;
 }
 
 input[ type="text"], textarea {
@@ -85,6 +95,11 @@ input[ type="text"], textarea {
 
 .invalid:placeholder-shown {
 	border-color: red;
+}
+
+.item-error {
+	color: #b00;
+	font-weight: bold;
 }
 
 .btn-container {
@@ -224,6 +239,43 @@ input[ type="text"], textarea {
 }
 
 
+/********************************
+*								*
+*		StudyTopic Styles		*
+*								*
+*********************************/
+
+.study-topic ul {
+	padding-inline-start: 0;
+	overflow-y: auto;
+	max-height: 300px;
+}
+
+.study-topic li {
+	display: flex;
+	justify-content: space-between;
+}
+
+.study-topic li .quiz-title {
+	margin-right: 15px;
+	height: 25px;
+	white-space: nowrap;
+	flex-grow: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0;
+}
+
+.study-topic .btn-run-quiz {
+	background-color: #050;
+}
+.study-topic .btn-run-quiz:hover {
+	background-color: #060;
+}
+.study-topic .btn-run-quiz:active {
+	background-color: #070;
+}
+
 
 /********************************
 *								*
@@ -259,16 +311,10 @@ input[ type="text"], textarea {
 	min-width: 0;
 }
 
-.question-delete {
-	background-color: #700;
-	font-size: 22px;
-	padding: 0 12px;
-}
-
 
 /********************************
 *								*
-*		Edit Qestion Styles		*
+*		Edit Question Styles	*
 *								*
 *********************************/
 
@@ -303,9 +349,4 @@ input[ type="text"], textarea {
 
 .create-question-form .answers .answer-correct {
 	width: 95px;
-}
-
-.create-question-form .answer-error {
-	color: #b00;
-	font-weight: bold;
 }
