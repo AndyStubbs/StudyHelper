@@ -46,7 +46,12 @@
 
 		// Save question button
 		div.querySelector( ".submit-question" ).addEventListener( "click", ( e ) => saveChanges( e, div, question, questionUpdated ) );
-		return div;
+
+		const questionOriginal = JSON.stringify( question );
+		return {
+			"div": div,
+			"onClose": () => onClose( div, question, questionUpdated, questionOriginal )
+		};
 	}
 
 	function updateAnswersContent( div, question ) {
@@ -115,8 +120,15 @@
 		} );
 	}
 
+	function updateQuestion( div, question ) {
+		const questionTextArea = div.querySelector( ".question-text" );
+		question.text = questionTextArea.value;
+	}
+
 	function saveChanges( e, div, question, questionUpdated ) {
-		e.preventDefault();
+		if( e ) {
+			e.preventDefault();
+		}
 
 		// Validate question
 		const questionTextArea = div.querySelector( ".question-text" );
@@ -147,11 +159,28 @@
 
 		if( isValid ) {
 			div.querySelector( ".answer-error" ).innerText = "";
-			question.text = questionTextArea.value;
+			updateQuestion( div, question );
 			updateAnswers( div, question );
 			div.closest( ".modal" ).remove();
 			questionUpdated( question );
 		}
+	}
+
+	function onClose( div, question, questionUpdated, questionOriginal ) {
+		updateAnswers( div, question );
+		updateQuestion( div, question );
+
+		// Check if question has been changed
+		if( JSON.stringify( question ) !== questionOriginal ) {
+			const answer = confirm( "Do you wish to save changes?" );
+			if( answer ) {
+				saveChanges( null, div, question, questionUpdated );
+				return false;
+			}
+		}
+
+		// Continue with closing modal
+		return true;
 	}
 
 } )();

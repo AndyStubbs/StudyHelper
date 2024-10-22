@@ -66,9 +66,9 @@
 	}
 
 	function editQuestion( div, quiz, index, question ) {
-		let questionModal = Comp.Modal(
-			window.Comp.CreateQuestion( question, ( newQuestionData ) => questionUpdated( div, quiz, index, newQuestionData ) )
-		);
+		const questionData = structuredClone( question );
+		const questionComp = window.Comp.CreateQuestion( questionData, ( newQuestionData ) => questionUpdated( div, quiz, index, newQuestionData ) );
+		let questionModal = Comp.Modal( questionComp.div, questionComp.onClose );
 		document.getElementById( "modals-container" ).appendChild( questionModal );
 	}
 
@@ -78,8 +78,8 @@
 		editQuestion( div, quiz, quiz.questions.length - 1, question );
 	}
 
-	function questionUpdated( div, quiz, questionIndex, question ) {
-		quiz.questions[ questionIndex ] = question;
+	function questionUpdated( div, quiz, questionIndex, questionData ) {
+		quiz.questions[ questionIndex ] = questionData;
 		updateQuestionsContent( div, quiz );
 	}
 
