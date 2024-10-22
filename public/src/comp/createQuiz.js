@@ -67,7 +67,7 @@
 
 	function editQuestion( div, quiz, index, question ) {
 		let questionModal = Comp.Modal(
-			window.Comp.EditQuestion( question, ( question ) => questionUpdated( div, quiz, index, question ) )
+			window.Comp.CreateQuestion( question, ( newQuestionData ) => questionUpdated( div, quiz, index, newQuestionData ) )
 		);
 		document.getElementById( "modals-container" ).appendChild( questionModal );
 	}

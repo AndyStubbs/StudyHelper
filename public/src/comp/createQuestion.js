@@ -1,7 +1,7 @@
 "use strict";
 
 /***************************************************************************************************
- *	editQuestion.js
+ *	createQuestion.js
  *
  *	This file creates template for editing questions
  *
@@ -9,9 +9,9 @@
 
 ( function () {
 
-	window.Comp.EditQuestion = editQuestion;
+	window.Comp.CreateQuestion = createQuestion;
 
-	function editQuestion( question, questionUpdated ) {
+	function createQuestion( question, questionUpdated ) {
 		let div = document.createElement( "div" );
 		let title = "Edit Question";
 		if( question === null ) {
